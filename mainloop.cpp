@@ -314,22 +314,22 @@ void add_event_log(sdbusplus::bus::bus& bus,
     if (assert_msg == "Assert") {
         if (record_item != g_record_event_list.end())
 		{
-			printf ("[DEBUGMSG] Assert return sensor : %s \n", sensor.c_str());
+			printf ("[add_event_log] Assert return sensor : %s \n", sensor.c_str());
             return;
 		}
         g_record_event_list.insert(record_item_key);
-		printf ("[DEBUGMSG] Assert loop sensor : %s \n", sensor.c_str());
+		printf ("[add_event_log] Assert loop sensor : %s \n", sensor.c_str());
     } 
 	else if (assert_msg == "Deassert") {
 		if (record_item != g_record_event_list.end())
 		{
-			printf ("[DEBUGMSG] Deassert return sensor : %s \n", sensor.c_str());
+			printf ("[add_event_log] Deassert return sensor : %s \n", sensor.c_str());
 			g_record_event_list.erase(record_item);
 		}
-        printf ("[DEBUGMSG] Deassert loop sensor : %s \n", sensor.c_str());
+        printf ("[add_event_log] Deassert loop sensor : %s \n", sensor.c_str());
         return;
     }
-	printf ("[DEBUGMSG] creat log sensor : %s ; assert_msg : %s \n", sensor.c_str(), assert_msg.c_str());
+	printf ("[add_event_log] creat log sensor : %s ; assert_msg : %s \n", sensor.c_str(), assert_msg.c_str());
     auto method =  bus.new_method_call("xyz.openbmc_project.Logging",
                                        "/xyz/openbmc_project/logging/internal/manager",
                                        "xyz.openbmc_project.Logging.Internal.Manager",
