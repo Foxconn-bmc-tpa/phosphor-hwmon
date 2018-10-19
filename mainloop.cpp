@@ -325,7 +325,7 @@ void add_event_log(sdbusplus::bus::bus& bus,
 		if (record_item != g_record_event_list.end())
 		{
 			printf ("[add_event_log] Deassert return sensor : %s \n", sensor.c_str());
-			return
+			return;
 			//g_record_event_list.erase(record_item);
 		}
 		g_record_event_list.insert(record_item_key);
