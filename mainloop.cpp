@@ -310,8 +310,9 @@ void add_event_log(sdbusplus::bus::bus& bus,
     //check if even trigger assert or deassert event
     std::string record_item_key = event_key + sensor;
     auto record_item = g_record_event_list.find(record_item_key);
-	
-    if (assert_msg == "Assert") {
+	printf ("[add_event_log] record_item : %s \n", record_item.c_str());
+    if (assert_msg == "Assert") 
+	{
         if (record_item != g_record_event_list.end())
 		{
 			printf ("[add_event_log] Assert return sensor : %s \n", sensor.c_str());
@@ -320,14 +321,17 @@ void add_event_log(sdbusplus::bus::bus& bus,
         g_record_event_list.insert(record_item_key);
 		printf ("[add_event_log] Assert loop sensor : %s \n", sensor.c_str());
     } 
-	else if (assert_msg == "Deassert") {
+	else if (assert_msg == "Deassert") 
+	{
 		if (record_item != g_record_event_list.end())
 		{
 			printf ("[add_event_log] Deassert return sensor : %s \n", sensor.c_str());
-			g_record_event_list.erase(record_item);
+			return
+			//g_record_event_list.erase(record_item);
 		}
+		g_record_event_list.insert(record_item_key);
         printf ("[add_event_log] Deassert loop sensor : %s \n", sensor.c_str());
-        return;
+        //return;
     }
 	printf ("[add_event_log] creat log sensor : %s ; assert_msg : %s \n", sensor.c_str(), assert_msg.c_str());
     auto method =  bus.new_method_call("xyz.openbmc_project.Logging",
