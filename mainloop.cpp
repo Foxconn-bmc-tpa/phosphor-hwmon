@@ -310,8 +310,7 @@ void add_event_log(sdbusplus::bus::bus& bus,
     //check if even trigger assert or deassert event
     std::string record_item_key = event_key + sensor;
     auto record_item = g_record_event_list.find(record_item_key);
-	printf ("[add_event_log] record_item : %s \n", record_item.c_str());
-    if (assert_msg == "Assert") 
+	if (assert_msg == "Assert") 
 	{
         if (record_item != g_record_event_list.end())
 		{
