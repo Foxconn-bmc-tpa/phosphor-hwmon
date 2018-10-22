@@ -326,9 +326,12 @@ void add_event_log(sdbusplus::bus::bus& bus,
 		{
 			printf ("[Deassert] Deassert sensor \n");
 			g_record_event_list.erase(record_item);
+		}
+		else {
+			printf ("[Deassert] Deassert loop sensor \n");
 			return;
 		}
-        printf ("[Deassert] Deassert loop sensor \n");
+
         //return;
     }
 	printf ("[add_event_log] creat log sensor : %s ; assert_msg : %s \n", sensor.c_str(), assert_msg.c_str());
