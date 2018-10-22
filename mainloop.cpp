@@ -310,27 +310,26 @@ void add_event_log(sdbusplus::bus::bus& bus,
     //check if even trigger assert or deassert event
     std::string record_item_key = event_key + sensor;
     auto record_item = g_record_event_list.find(record_item_key);
+	std::cout << "record_item: " << record_item << std::endl;
 	if (assert_msg == "Assert") 
 	{
         if (record_item != g_record_event_list.end())
 		{
-			printf ("[add_event_log] Assert return sensor : %s \n", sensor.c_str());
+			printf ("[Assert] return sensor : %s \n", sensor.c_str());
             return;
 		}
         g_record_event_list.insert(record_item_key);
-		printf ("[add_event_log] Assert loop sensor : %s \n", sensor.c_str());
+		printf ("[Assert] loop sensor : %s \n", sensor.c_str());
     } 
 	else if (assert_msg == "Deassert") 
 	{
 		if (record_item != g_record_event_list.end())
 		{
-			printf ("[add_event_log] Deassert return sensor : %s \n", sensor.c_str());
-			//return;
+			printf ("[Deassert] Deassert return sensor : %s \n", sensor.c_str());
 			g_record_event_list.erase(record_item);
 		}
-		//g_record_event_list.insert(record_item_key);
-        printf ("[add_event_log] Deassert loop sensor : %s \n", sensor.c_str());
-        //return;
+        printf ("[Deassert] Deassert loop sensor : %s \n", sensor.c_str());
+        return;
     }
 	printf ("[add_event_log] creat log sensor : %s ; assert_msg : %s \n", sensor.c_str(), assert_msg.c_str());
     auto method =  bus.new_method_call("xyz.openbmc_project.Logging",
@@ -585,7 +584,6 @@ void MainLoop::run()
                             case InterfaceType::WARN:
                                 result_check_threshold = checkThresholds<WarningObject>(iface.second, value);
                                 //(i.first.first+i.first.second) -> sensor type+id, ex:type-pwm , id-1
-								printf ("[DEBUGMSG] Warning result_check_threshold : %d , sensor name : %s value : %d \n", result_check_threshold, sensor_name.c_str(), value);
                                 switch (result_check_threshold)
                                 {
                                     case 2: // (value>WarningHigh)
@@ -614,8 +612,7 @@ void MainLoop::run()
                             case InterfaceType::CRIT:
                                 result_check_threshold = checkThresholds<CriticalObject>(iface.second, value);
                                 //(i.first.first+i.first.second) -> sensor type+id, ex:type-pwm , id-1
-								printf ("[DEBUGMSG] Critical result_check_threshold : %d , sensor name : %s value : %d \n", result_check_threshold, sensor_name.c_str(), value);
-                                switch (result_check_threshold)
+								switch (result_check_threshold)
                                 {
                                     case 2: // (value>CRITHigh)
                                         error_log.assign("Sensor Threshold CriticalHigh:");
