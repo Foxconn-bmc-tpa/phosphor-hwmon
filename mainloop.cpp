@@ -310,7 +310,6 @@ void add_event_log(sdbusplus::bus::bus& bus,
     //check if even trigger assert or deassert event
     std::string record_item_key = event_key + sensor;
     auto record_item = g_record_event_list.find(record_item_key);
-	std::cout << "record_item: " << record_item << std::endl;
 	if (assert_msg == "Assert") 
 	{
         if (record_item != g_record_event_list.end())
@@ -605,7 +604,7 @@ void MainLoop::run()
                                         error_log.append(sensor_name);
                                         error_log.append(", value:");
                                         error_log.append(std::to_string(value));
-                                        add_event_log(_bus, error_log, "Recover", (i.first.first+i.first.second), "Deassert", LOG_LEVEL_WARNING);
+                                        add_event_log(_bus, error_log, "ThresholdWarning", (i.first.first+i.first.second), "Deassert", LOG_LEVEL_WARNING);
                                         break;
                                 }
                                 break;
@@ -633,7 +632,7 @@ void MainLoop::run()
                                         error_log.append(sensor_name);
                                         error_log.append(", value:");
                                         error_log.append(std::to_string(value));
-                                        add_event_log(_bus, error_log, "Recover", (i.first.first+i.first.second), "Deassert", LOG_LEVEL_CRITICAL);
+                                        add_event_log(_bus, error_log, "ThresholdCritical", (i.first.first+i.first.second), "Deassert", LOG_LEVEL_CRITICAL);
                                         break;
                                 }
                                 break;
