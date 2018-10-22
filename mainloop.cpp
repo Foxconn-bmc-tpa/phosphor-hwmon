@@ -312,23 +312,24 @@ void add_event_log(sdbusplus::bus::bus& bus,
     auto record_item = g_record_event_list.find(record_item_key);
 	if (assert_msg == "Assert") 
 	{
-        if (record_item != g_record_event_list.end())
+        if (record_item != g_record_event_list.end()) // The event was created, going the loop and return
 		{
-			printf ("[Assert] return sensor : %s \n", sensor.c_str());
+			printf ("[Assert] return sensor \n");
             return;
 		}
         g_record_event_list.insert(record_item_key);
-		printf ("[Assert] loop sensor : %s \n", sensor.c_str());
+		printf ("[Assert] loop sensor \n");
     } 
 	else if (assert_msg == "Deassert") 
 	{
 		if (record_item != g_record_event_list.end())
 		{
-			printf ("[Deassert] Deassert return sensor : %s \n", sensor.c_str());
+			printf ("[Deassert] Deassert sensor \n");
 			g_record_event_list.erase(record_item);
+			return;
 		}
-        printf ("[Deassert] Deassert loop sensor : %s \n", sensor.c_str());
-        return;
+        printf ("[Deassert] Deassert loop sensor \n");
+        //return;
     }
 	printf ("[add_event_log] creat log sensor : %s ; assert_msg : %s \n", sensor.c_str(), assert_msg.c_str());
     auto method =  bus.new_method_call("xyz.openbmc_project.Logging",
