@@ -310,16 +310,19 @@ void add_event_log(sdbusplus::bus::bus& bus,
     //check if even trigger assert or deassert event
     std::string record_item_key = event_key + sensor;
     auto record_item = g_record_event_list.find(record_item_key);
-    if (assert_msg == "Assert") {
+    if (assert_msg == "Assert") 
+    {
         if (record_item != g_record_event_list.end())
             return;
         g_record_event_list.insert(record_item_key);
-    } else if (assert_msg == "Deassert") {
+    } 
+    else if (assert_msg == "Deassert") 
+    {
         if (record_item != g_record_event_list.end())
             g_record_event_list.erase(record_item);
-        return;
+        else 
+            return;
     }
-
     auto method =  bus.new_method_call("xyz.openbmc_project.Logging",
                                        "/xyz/openbmc_project/logging/internal/manager",
                                        "xyz.openbmc_project.Logging.Internal.Manager",
@@ -589,7 +592,11 @@ void MainLoop::run()
                                         add_event_log(_bus, error_log, "ThresholdWarning", (i.first.first+i.first.second), "Assert", LOG_LEVEL_WARNING);
                                         break;
                                     default:
-                                        add_event_log(_bus, "", "ThresholdWarning", (i.first.first+i.first.second), "Deassert", LOG_LEVEL_WARNING);
+                                        error_log.assign("Sensor Warning Recover:");
+                                        error_log.append(sensor_name);
+                                        error_log.append(", value:");
+                                        error_log.append(std::to_string(value));
+                                        add_event_log(_bus, error_log, "ThresholdWarning", (i.first.first+i.first.second), "Deassert", LOG_LEVEL_WARNING);
                                         break;
                                 }
                                 break;
@@ -613,7 +620,11 @@ void MainLoop::run()
                                         add_event_log(_bus, error_log, "ThresholdCritical", (i.first.first+i.first.second), "Assert", LOG_LEVEL_CRITICAL);
                                         break;
                                     default:
-                                        add_event_log(_bus, "", "ThresholdCritical", (i.first.first+i.first.second), "Deassert", LOG_LEVEL_CRITICAL);
+                                        error_log.assign("Sensor Critical Recover:");
+                                        error_log.append(sensor_name);
+                                        error_log.append(", value:");
+                                        error_log.append(std::to_string(value));
+                                        add_event_log(_bus, error_log, "ThresholdCritical", (i.first.first+i.first.second), "Deassert", LOG_LEVEL_CRITICAL);
                                         break;
                                 }
                                 break;
